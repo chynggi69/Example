@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyg.dao.HomeBookDAO">
+<resultMap id="result" type="HomeBook">
+	<result property = "serialno" column = "SERIALNO"/>
+	<result property = "day" column = "DAY"/>
+	<result property = "section" column = "SECTION"/>
+	<result property = "account_title" column = "ACCOUNT_TITLE"/>
+	<result property = "remark" column = "REMARK"/>
+	<result property = "revenue" column = "REVENUE"/>
+	<result property = "expense" column = "EXPENSE"/>
+	<result property = "user_id" column = "USER_ID"/>
+</resultMap>
+<select id = "selectAll" resultMap="result">
+<![CDATA[
+	SELECT * FROM HOMEBOOK
+	]]>
+</select>
+<insert id = "insert" parameterType="HomeBook"
+	>
+	<![CDATA[
+	INSERT INTO HOMEBOOK (SERIALNO,DAY,SECTION,ACCOUNT_TITLE,REMARK,REVENUE,EXPENSE,USER_ID) 
+	VALUES(HOMEBOOK_SEQ.NEXTVAL,#{day},#{section},#{account_title},#{remark},#{revenue},#{expense},#{user_id})
+	]]>
+
+</insert>
+<update id = "update" parameterType="HomeBook">
+	UPDATE HomeBook SET
+	 DAY = #{day}, SECTION = #{section}, ACCOUNT_TITLE = #{account_title},REMARK = #{remark}, 
+	 REVENUE = #{revenue}, EXPENSE = #{expense},USER_ID = #{user_id}
+	 WHERE SERIALNO = #{serialno}
+</update>
+<delete id = "delete" parameterType="long">
+	DELETE FROM HOMEBOOK WHERE SERIALNO = #{id}
+
+</delete>
+<select id = "selectById" parameterType="long" resultMap="result">
+<![CDATA[
+	SELECT * FROM HOMEBOOK WHERE SERIALNO = #{id}
+	]]>
+</select>
+<select id = "selectByIdList" parameterType="String" resultMap="result">
+<![CDATA[
+	SELECT * FROM HOMEBOOK WHERE SERIALNO = #{id}
+	]]>
+</select>
+
+
+
+
+
+</mapper>

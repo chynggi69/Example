@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyg.service.ServiceDAO">
+<resultMap id="result" type="total">
+	<result property = "memId" column = "MemberID"/>
+	<result property = "memName" column = "MemberNAME"/>
+	<result property = "sumOfRevenue" column = "SORev"/>
+	<result property = "sumOfExpense" column = "SOExp"/>
+</resultMap>
+<resultMap id="alternateres" type="HomeBook">
+	<result property = "serialno" column = "SERIALNO"/>
+	<result property = "day" column = "DAY"/>
+	<result property = "section" column = "SECTION"/>
+	<result property = "account_title" column = "ACCOUNT_TITLE"/>
+	<result property = "remark" column = "REMARK"/>
+	<result property = "revenue" column = "REVENUE"/>
+	<result property = "expense" column = "EXPENSE"/>
+	<result property = "user_id" column = "USER_ID"/>
+</resultMap>
+<resultMap id="result2" type="total2">
+	<result property = "countofboard" column = "COB"/>
+	<result property = "countofhomebook" column = "COH"/>
+	<result property = "sumOfRevenue" column = "SORev"/>
+	<result property = "sumOfExpense" column = "SOExp"/>
+</resultMap>
+<select id = "GetTotalList" resultMap="result">
+
+	SELECT 
+	H.USER_ID AS MemberID, 
+	M.MNAME AS MemberNAME, 
+	SUM(H.EXPENSE) AS SOExp, 
+	SUM(H.REVENUE) AS SORev 
+	FROM HOMEBOOK H, BMEMBER M
+	WHERE M.MID = H.USER_ID
+	GROUP BY H.USER_ID, M.MNAME
+	
+</select>
+<select id = "countofcontents" resultType="long">
+<![CDATA[
+	SELECT COUNT(*) FROM BOARD
+	]]>
+</select>
+<select id = "SelectByUserID" parameterType="String" resultMap="alternateres">
+<![CDATA[
+	SELECT * FROM HOMEBOOK WHERE USER_ID = #{id}
+	]]>
+</select>
+<select id = "SelectBeetweendata" parameterType="hashmap" resultMap="alternateres">
+<![CDATA[
+	SELECT * FROM HOMEBOOK WHERE USER_ID = #{id} and day Between #{startdate} and #{enddate}
+	]]>
+</select>
+
+<select id = "GetStats" parameterType="String" resultMap="result2">
+<![CDATA[
+	SELECT COUNT(BNO) COB, COUNT(SERIALNO) COH, SUM(H.EXPENSE) AS SOExp, SUM(H.REVENUE) AS SORev 
+	FROM BOARD B,HOMEBOOK H,BMEMBER M WHERE H.USER_ID = #{id} AND 
+	H.USER_ID = M.MID AND B.MID = M.MID
+	]]>
+</select>
+
+</mapper>

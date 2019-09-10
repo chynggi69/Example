@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyg.dao.BMemberDAO">
+<resultMap id="result" type="bmember">
+	<result property = "mid" column = "MID"/>
+	<result property = "mname" column = "MNAME"/>
+	<result property = "mpassword" column = "MPASSWORD"/>
+	<result property = "mphone" column = "MPHONE"/>
+	<result property = "mjoinDate" column = "MJOIN_DATE"/>
+</resultMap>
+<select id = "selectAll" resultMap="result">
+<![CDATA[
+	SELECT * FROM BMEMBER
+	]]>
+</select>
+<insert id = "insert" parameterType="bmember"
+	>
+	<![CDATA[
+	INSERT INTO BMember (MID,MNAME,MPASSWORD,MPHONE,MJOIN_DATE) 
+	VALUES(#{mid},#{mname},#{mpassword},#{mphone},#{mjoinDate})
+	]]>
+
+</insert>
+<update id = "update" parameterType="bmember">
+	UPDATE BMember SET
+	 MNAME = #{mname}, MPASSWORD = #{mpassword}, MPHONE = #{mphone},MJOIN_DATE = #{mjoinDate} 
+	 WHERE MID = #{mid}
+</update>
+<delete id = "delete" parameterType="String">
+	DELETE FROM BMember WHERE MID = #{id}
+
+</delete>
+<select id = "selectById" parameterType="String" resultMap="result">
+<![CDATA[
+	SELECT * FROM BMember WHERE MID = #{id}
+	]]>
+</select>
+
+
+
+
+
+</mapper>
